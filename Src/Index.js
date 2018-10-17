@@ -1,7 +1,7 @@
 var express=require('express')
 var request=require('request');
 var env=require('./env');
-var URL=require('url');
+const { URL } = require('url');
 var http=request.defaults({proxy:env.proxy})
 
 var app=express();
@@ -27,8 +27,9 @@ app.get('/Image',(req,res)=>{
         if(err)
         throw err;
         var OpJson={};
-        for(var i=req.query.start;i<=req.query.end;i++){    
-        OpJson[i]="http://localhost:3000/Image/"+data[i]
+        for(var i=req.query.start;i<=req.query.end;i++){  
+            const myURL = new URL(data[i],req.headers.referer+req.path);  
+        OpJson[i]=myURL;
         }
         res.json(OpJson);
         // res.contentType('image/jpeg');
