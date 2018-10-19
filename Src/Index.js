@@ -29,6 +29,7 @@ app.get('/Image',(req,res)=>{
         var OpJson={};
         for(var i=req.query.start;i<=req.query.end;i++){ 
             var baseUrl=(req.protocol+"://"+req.headers.host+req.path+"/"+data[i]) 
+            console.log(req);
             const myURL = baseUrl  
         OpJson[i]=myURL;
         }
