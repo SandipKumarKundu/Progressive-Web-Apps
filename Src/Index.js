@@ -1,11 +1,20 @@
 var express=require('express')
 var request=require('request');
-var env=require('./env');
-// const { URL } = require('url');
-var http=request.defaults({proxy:env.proxy})
+let dotenv=require('dotenv');
+var env=require('./env');dotenv.config({path:require('path').join(__dirname,'config.env')});
+let notificationRoutes=require('./module/Routes/notificationRoutes');
+let dbconnection=require('./module/Database/Dbconnection')();
 
+
+
+
+
+
+var http=request.defaults({proxy:env.proxy})
 var app=express();
 app.use('/',express.static(require('path').join(__dirname,'../www/')));
+app.use('/notify',notificationRoutes);
+app.use('/Image',express.static(require('path').join(__dirname,'./module/images')));
 app.get('/',(req,res)=>{
 
     res.sendFile(require('path').join(__dirname,'../www/','index.html'));
@@ -22,7 +31,7 @@ get.on('error',(req,res)=>{
 })
 })
 app.get('/Image',(req,res)=>{
-    app.use('/Image',express.static(require('path').join(__dirname,'./module/images')));
+    
     require('fs').readdir(require('path').join(__dirname,'./module/images'),(err,data)=>{
         if(err)
         throw err;
@@ -39,4 +48,4 @@ app.get('/Image',(req,res)=>{
         
     })
 })
-app.listen(process.env.PORT ||3000);
+app.listen(process.env.PORT|3001);
